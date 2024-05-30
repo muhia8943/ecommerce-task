@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-COMMERCE PLATFORM</title>
+    <link rel="stylesheet" href="web.css">
+</head>
+<body>
+    <div class="main">
+        <div class="bar">
+            <div class="name">
+                <h2>Fit Feet- Admin</h2>
+                <input type="text" placeholder="Search..">
+            </div>
+            <div class="login">
+                <div class="log">
+                    <p>Log in</p>
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                </div>
+                <div class="cart">
+                    <p>Cart</p>
+                    <ion-icon name="cart-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+        <div class="yellow">
+            <p>Shopping Made<br> Easier.</p>
+        </div>
+        <div class="add">
+            <form id="itemsform">
+                <label for="item">Item:</label><br><br>
+                <input type="text" id="item" name="item"><br>
+                
+                <label for="price">Price:</label><br><br>
+                <input type="text" id="price" name="price"><br>
+                
+                <label for="description">Description:</label><br><br>
+                
+                <input type="text" id="description" name="description"><br>
+                <input type="text" id="imageUrl" placeholder="Image URL" required>
+                <button id="btn" type="submit">CREATE ITEM</button><br>
+            </form><br>
+            
+            
+        
+    </div>
+    <div class="upbtn">
+        <button id="update-btn" >UPDATE ITEM</button>
+    </div>
+    <div class="itemscontainer"></div>
+    <script src="dist/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

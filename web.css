@@ -1,0 +1,211 @@
+
+ion-icon {
+    color: yellow;
+  }
+  .body{
+    width: 100vw;
+    height: 100vh;
+  }
+  .main{
+    padding: 15px;
+    background-color: gray;
+  }
+  .bar{
+    display: flex;
+    background-color: gray;
+    color: white;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    flex-wrap: wrap;
+  }
+  .name{
+    display: flex;
+    gap: 20px;
+    margin-left: 30px;
+    flex-wrap: wrap;
+  }
+  .login{
+    display: flex;
+    gap: 20px;
+    margin-left: 10px;
+  }
+  .log,.cart{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  .name input{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-right: 80px;
+  }
+  .login ion-icon{
+    margin-top: 10px;
+    font-size: 40px;
+  }
+  .name h2{
+    font-style: italic;
+    font-size: 30px;
+    color: yellow;
+  }
+  .yellow{
+    background-image: url(IMAGES/sneaker-shopping-1440x600_yf077mom.jpeg);
+    height:200px;
+    background-repeat:no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  .yellow p{
+    font-size: 40px;
+    padding: 25px;
+    color: yellow;
+    font-style: oblique;
+  }
+  .add ion-icon{
+    font-size: 120px;
+  }
+  .add button:hover{
+    background-color: gray;
+  }
+  .add{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .add input{
+    padding-right: 120px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+  }
+  .itemscontainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    justify-content: center;
+    
+  }
+  .product-card{
+    border: yellow,2px solid;
+    padding: 7px;
+    background-color: white;
+    border-radius: 4px;
+  }
+  .product-card:hover{
+    background-color: gray;
+    color: white;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+  .upbtn{
+    margin-left:460px;
+  }
+  .upbtn button {
+    padding: 10px;
+    background-color: rgb(164, 164, 87);
+    color: white;
+    border-radius: 6px;
+
+  }
+  .add button {
+    padding: 10px;
+    background-color: rgb(164, 164, 87);
+    color: white;
+    margin-top: 5px;
+    border-radius: 6px;
+  }
+  .add label {
+    font-size: larger;
+  }
+  .product-card img {
+    width: 130px;
+    height: 100px;
+    object-fit: cover;}
+  .validation-message {
+    color: red;
+    font-size: 16px;
+    margin-top: 5px;
+    
+
+  }
+  
+  @media (max-width: 1024px) {
+    .name {
+      flex-direction: column;
+      margin-left: 0;
+    }
+  
+    .login {
+      margin-left: 0;
+      justify-content: center;
+    }
+  
+    .name input {
+      width: 100%;
+      padding-right: 0;
+    }
+  
+    .yellow p {
+      font-size: 30px;
+    }
+  
+    .upbtn {
+      margin-left: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+  }
+  
+  @media (max-width: 768px) {
+    .bar {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .yellow {
+      height: 150px;
+    }
+  
+    .yellow p {
+      font-size: 25px;
+      padding: 15px;
+    }
+  
+    .add input {
+      width: 100%;
+      padding-right: 0;
+    }
+  
+    .upbtn button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .name h2 {
+      font-size: 20px;
+    }
+  
+    .login ion-icon {
+      font-size: 30px;
+    }
+  
+    .yellow p {
+      font-size: 20px;
+    }
+  
+    .add ion-icon {
+      font-size: 80px;
+    }
+  
+    .product-card {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+ 
