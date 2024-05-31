@@ -164,6 +164,34 @@ ion-icon {
   width: 140px;
   
 }
+.welcome-page{
+  background-image: url(IMAGES/sneaker-shopping-1440x600_yf0mom.jpeg);
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.welcome-page h1{
+  color: yellow;
+  font-size: 60px;
+  font-style: oblique;
+}
+.welcome-page button{
+  background-color: red;
+  color: white;
+  border-radius: 6px;
+  padding: 30px;
+}
+.welcome-page button:hover{
+  background-color: yellow;
+  color: white;
+}
 
 
 

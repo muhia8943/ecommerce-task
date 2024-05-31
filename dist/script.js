@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g, _h;
 let currentProductId = null;
 let allProducts = [];
 let cart = [];
@@ -19,6 +19,43 @@ function fetchProducts() {
         allProducts = products;
         displayProducts(products, adminView);
     });
+}
+// Add event listeners for user and admin buttons
+(_a = document.getElementById('user-btn')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+    switchToUserView();
+});
+(_b = document.getElementById('admin-btn')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
+    switchToAdminView();
+});
+// Function to switch to user view
+function switchToUserView() {
+    const welcomePage = document.querySelector('.welcome-page');
+    const mainPage = document.querySelector('.main');
+    welcomePage.style.display = 'none';
+    mainPage.style.display = 'block';
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Fit Feet - User';
+    fetchProducts(false); // Fetch products without admin buttons
+    // Hide the form in user view
+    const itemsForm = document.getElementById('itemsform');
+    if (itemsForm) {
+        itemsForm.style.display = 'none';
+    }
+}
+// Function to switch to admin view
+function switchToAdminView() {
+    const welcomePage = document.querySelector('.welcome-page');
+    const mainPage = document.querySelector('.main');
+    welcomePage.style.display = 'none';
+    mainPage.style.display = 'block';
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Fit Feet - Admin';
+    fetchProducts(true); // Fetch products with admin buttons
+    // Show the form in admin view
+    const itemsForm = document.getElementById('itemsform');
+    if (itemsForm) {
+        itemsForm.style.display = 'block';
+    }
 }
 function displayProducts(products, adminView = true) {
     const itemsContainer = document.querySelector('.itemscontainer');
@@ -55,7 +92,7 @@ function displayProducts(products, adminView = true) {
         });
     }
 }
-(_a = document.getElementById('itemsform')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
+(_c = document.getElementById('itemsform')) === null || _c === void 0 ? void 0 : _c.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
     const itemInput = document.getElementById('item');
     const priceInput = document.getElementById('price');
@@ -145,7 +182,7 @@ function handleUpdate(event) {
         }
     });
 }
-(_b = document.getElementById('update-btn')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, function* () {
+(_d = document.getElementById('update-btn')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
     if (currentProductId) {
         const itemInput = document.getElementById('item');
@@ -190,23 +227,10 @@ function handleUpdate(event) {
         document.getElementById('itemsform').reset();
     }
 }));
-(_c = document.getElementById('user-btn')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
-    var _a;
-    const titleElement = document.getElementById('title');
-    const adminElements = document.getElementById('admin-elements');
-    const isAdminView = (_a = titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) === null || _a === void 0 ? void 0 : _a.includes('Admin');
-    if (isAdminView) {
-        titleElement.textContent = 'Fit Feet - User';
-        adminElements.style.display = 'none';
-        fetchProducts(false); // Fetch products without admin buttons
-    }
-    else {
-        titleElement.textContent = 'Fit Feet - Admin';
-        adminElements.style.display = 'block';
-        fetchProducts(true); // Fetch products with admin buttons
-    }
+(_e = document.getElementById('user-btn')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
+    switchToUserView();
 });
-(_d = document.querySelector('.name input')) === null || _d === void 0 ? void 0 : _d.addEventListener('input', (event) => {
+(_f = document.querySelector('.name input')) === null || _f === void 0 ? void 0 : _f.addEventListener('input', (event) => {
     var _a, _b;
     const searchTerm = event.target.value.toLowerCase();
     const filteredProducts = allProducts.filter(product => product.item.toLowerCase().includes(searchTerm));
@@ -224,13 +248,13 @@ function handleAddToCart(event) {
     }
 }
 // Handle showing the cart modal
-(_e = document.getElementById('cart-btn')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
+(_g = document.getElementById('cart-btn')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', () => {
     displayCart();
     const cartModal = document.getElementById('cart-modal');
     cartModal.style.display = 'block';
 });
 // Handle closing the cart modal
-(_f = document.getElementById('close-cart-btn')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', () => {
+(_h = document.getElementById('close-cart-btn')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', () => {
     const cartModal = document.getElementById('cart-modal');
     cartModal.style.display = 'none';
 });
@@ -254,18 +278,16 @@ function displayCart() {
       `;
             cartItemsContainer.appendChild(cartItem);
         });
-        document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
-            button.addEventListener('click', handleRemoveFromCart);
-        });
     }
+    document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+        button.addEventListener('click', handleRemoveFromCart);
+    });
 }
-// Handle removing a product from the cart
 function handleRemoveFromCart(event) {
     const button = event.target;
-    const index = button.dataset.index;
-    if (index !== undefined) {
-        cart.splice(Number(index), 1);
+    const index = parseInt(button.dataset.index || '');
+    if (!isNaN(index)) {
+        cart.splice(index, 1);
         displayCart();
     }
 }
-fetchProducts();
