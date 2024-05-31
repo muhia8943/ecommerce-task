@@ -10,24 +10,24 @@
     <div class="main">
         <div class="bar">
             <div class="name">
-                <h2>Fit Feet- Admin</h2>
+                <h2 id="title">Fit Feet - Admin</h2>
                 <input type="text" placeholder="Search..">
             </div>
             <div class="login">
                 <div class="log">
-                    <p>Log in</p>
-                    <ion-icon name="person-circle-outline"></ion-icon>
+                    <p>User</p>
+                    <button id="user-btn"><ion-icon name="person-circle-outline"></ion-icon></button>
                 </div>
                 <div class="cart">
                     <p>Cart</p>
-                    <ion-icon name="cart-outline"></ion-icon>
+                    <button id="cart-btn"><ion-icon name="cart-outline"></ion-icon></button>
                 </div>
             </div>
         </div>
         <div class="yellow">
             <p>Shopping Made<br> Easier.</p>
         </div>
-        <div class="add">
+        <div class="add" id="admin-elements">
             <form id="itemsform">
                 <label for="item">Item:</label><br><br>
                 <input type="text" id="item" name="item"><br>
@@ -36,19 +36,21 @@
                 <input type="text" id="price" name="price"><br>
                 
                 <label for="description">Description:</label><br><br>
-                
                 <input type="text" id="description" name="description"><br>
-                <input type="text" id="imageUrl" placeholder="Image URL" required>
+                <input type="text" id="imageUrl" placeholder="Image URL" required><br>
                 <button id="btn" type="submit">CREATE ITEM</button><br>
             </form><br>
-            
-            
-        
+            <div class="upbtn">
+                <button id="update-btn">UPDATE ITEM</button>
+            </div>
+        </div>
+        <div class="itemscontainer"></div>
+        <div id="cart-modal" style="display:none;">
+            <div id="cart-items"></div>
+            <button>Check-out</button><br>
+            <button id="close-cart-btn">Close</button>
+          </div>
     </div>
-    <div class="upbtn">
-        <button id="update-btn" >UPDATE ITEM</button>
-    </div>
-    <div class="itemscontainer"></div>
     <script src="dist/script.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

@@ -8,18 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var _a, _b, _c;
+var _a, _b, _c, _d, _e, _f;
 let currentProductId = null;
 let allProducts = [];
+let cart = [];
 function fetchProducts() {
-    return __awaiter(this, void 0, void 0, function* () {
+    return __awaiter(this, arguments, void 0, function* (adminView = true) {
         const response = yield fetch('http://localhost:3000/products');
         const products = yield response.json();
         allProducts = products;
-        displayProducts(products);
+        displayProducts(products, adminView);
     });
 }
-function displayProducts(products) {
+function displayProducts(products, adminView = true) {
     const itemsContainer = document.querySelector('.itemscontainer');
     itemsContainer.innerHTML = '';
     products.forEach((product) => {
@@ -27,21 +28,32 @@ function displayProducts(products) {
         productCard.className = 'product-card';
         productCard.dataset.id = product.id;
         productCard.innerHTML = `
-      <img src="${product.imageUrl}" alt="${product.item}">
+      <img src="${product.imageUrl}" alt="${product.item}" style="width: 100px; height: 100px;">
       <h3>${product.item}</h3>
       <p>Price: ${product.price}</p>
       <p>Description: ${product.description}</p>
+      ${adminView ? `
       <button class="update-btn">Update</button>
       <button class="delete-btn">Delete</button>
+      ` : `
+      <button class="add-to-cart-btn">Add to Cart</button>
+      `}
     `;
         itemsContainer.appendChild(productCard);
     });
-    document.querySelectorAll('.update-btn').forEach(button => {
-        button.addEventListener('click', handleUpdate);
-    });
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', handleDelete);
-    });
+    if (adminView) {
+        document.querySelectorAll('.update-btn').forEach(button => {
+            button.addEventListener('click', handleUpdate);
+        });
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', handleDelete);
+        });
+    }
+    else {
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', handleAddToCart);
+        });
+    }
 }
 (_a = document.getElementById('itemsform')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
@@ -178,9 +190,82 @@ function handleUpdate(event) {
         document.getElementById('itemsform').reset();
     }
 }));
-(_c = document.querySelector('.name input')) === null || _c === void 0 ? void 0 : _c.addEventListener('input', (event) => {
+(_c = document.getElementById('user-btn')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
+    var _a;
+    const titleElement = document.getElementById('title');
+    const adminElements = document.getElementById('admin-elements');
+    const isAdminView = (_a = titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) === null || _a === void 0 ? void 0 : _a.includes('Admin');
+    if (isAdminView) {
+        titleElement.textContent = 'Fit Feet - User';
+        adminElements.style.display = 'none';
+        fetchProducts(false); // Fetch products without admin buttons
+    }
+    else {
+        titleElement.textContent = 'Fit Feet - Admin';
+        adminElements.style.display = 'block';
+        fetchProducts(true); // Fetch products with admin buttons
+    }
+});
+(_d = document.querySelector('.name input')) === null || _d === void 0 ? void 0 : _d.addEventListener('input', (event) => {
+    var _a, _b;
     const searchTerm = event.target.value.toLowerCase();
     const filteredProducts = allProducts.filter(product => product.item.toLowerCase().includes(searchTerm));
-    displayProducts(filteredProducts);
+    const isAdminView = (_b = (_a = document.getElementById('title')) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.includes('Admin');
+    displayProducts(filteredProducts, isAdminView);
 });
+// Handle adding a product to the cart
+function handleAddToCart(event) {
+    const productCard = event.target.closest('.product-card');
+    const productId = productCard.dataset.id;
+    const product = allProducts.find(p => p.id === productId);
+    if (product) {
+        cart.push(product);
+        alert(`${product.item} has been added to your cart.`);
+    }
+}
+// Handle showing the cart modal
+(_e = document.getElementById('cart-btn')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
+    displayCart();
+    const cartModal = document.getElementById('cart-modal');
+    cartModal.style.display = 'block';
+});
+// Handle closing the cart modal
+(_f = document.getElementById('close-cart-btn')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', () => {
+    const cartModal = document.getElementById('cart-modal');
+    cartModal.style.display = 'none';
+});
+// Display the cart items in the cart modal
+function displayCart() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = '';
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+    }
+    else {
+        cart.forEach((product, index) => {
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `
+        <img src="${product.imageUrl}" alt="${product.item}" style="width: 50px; height: 50px;">
+        <h4>${product.item}</h4>
+        <p>Price: ${product.price}</p>
+        <p>Description: ${product.description}</p>
+        <button class="remove-from-cart-btn" data-index="${index}">Remove</button>
+      `;
+            cartItemsContainer.appendChild(cartItem);
+        });
+        document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+            button.addEventListener('click', handleRemoveFromCart);
+        });
+    }
+}
+// Handle removing a product from the cart
+function handleRemoveFromCart(event) {
+    const button = event.target;
+    const index = button.dataset.index;
+    if (index !== undefined) {
+        cart.splice(Number(index), 1);
+        displayCart();
+    }
+}
 fetchProducts();

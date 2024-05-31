@@ -7,41 +7,52 @@ interface Product {
 }
 
 let currentProductId: string | null = null;
-let allProducts: Product[] = []; 
+let allProducts: Product[] = [];
+let cart: Product[] = [];
 
-async function fetchProducts() {
+async function fetchProducts(adminView = true) {
   const response = await fetch('http://localhost:3000/products');
   const products: Product[] = await response.json();
   allProducts = products;
-  displayProducts(products);
+  displayProducts(products, adminView);
 }
 
-function displayProducts(products: Product[]) {
+function displayProducts(products: Product[], adminView = true) {
   const itemsContainer = document.querySelector('.itemscontainer') as HTMLElement;
-  itemsContainer.innerHTML = ''; 
+  itemsContainer.innerHTML = '';
 
   products.forEach((product) => {
     const productCard = document.createElement('div');
     productCard.className = 'product-card';
     productCard.dataset.id = product.id;
     productCard.innerHTML = `
-      <img src="${product.imageUrl}" alt="${product.item}">
+      <img src="${product.imageUrl}" alt="${product.item}" style="width: 100px; height: 100px;">
       <h3>${product.item}</h3>
       <p>Price: ${product.price}</p>
       <p>Description: ${product.description}</p>
+      ${adminView ? `
       <button class="update-btn">Update</button>
       <button class="delete-btn">Delete</button>
+      ` : `
+      <button class="add-to-cart-btn">Add to Cart</button>
+      `}
     `;
     itemsContainer.appendChild(productCard);
   });
 
-  document.querySelectorAll('.update-btn').forEach(button => {
-    button.addEventListener('click', handleUpdate);
-  });
+  if (adminView) {
+    document.querySelectorAll('.update-btn').forEach(button => {
+      button.addEventListener('click', handleUpdate);
+    });
 
-  document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', handleDelete);
-  });
+    document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', handleDelete);
+    });
+  } else {
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', handleAddToCart);
+    });
+  }
 }
 
 document.getElementById('itemsform')?.addEventListener('submit', async (event) => {
@@ -92,8 +103,8 @@ document.getElementById('itemsform')?.addEventListener('submit', async (event) =
   });
 
   const createdProduct: Product = await response.json();
-  fetchProducts(); 
-  (document.getElementById('itemsform') as HTMLFormElement).reset(); 
+  fetchProducts();
+  (document.getElementById('itemsform') as HTMLFormElement).reset();
 });
 
 function displayValidationMessage(inputElement: HTMLInputElement, message: string) {
@@ -125,7 +136,7 @@ async function handleDelete(event: Event) {
       method: 'DELETE',
     });
 
-    fetchProducts(); 
+    fetchProducts();
   }
 }
 
@@ -197,16 +208,96 @@ document.getElementById('update-btn')?.addEventListener('click', async (event) =
       body: JSON.stringify(updatedProduct),
     });
 
-    fetchProducts(); 
+    fetchProducts();
     currentProductId = null;
-    (document.getElementById('itemsform') as HTMLFormElement).reset(); 
+    (document.getElementById('itemsform') as HTMLFormElement).reset();
+  }
+});
+
+document.getElementById('user-btn')?.addEventListener('click', () => {
+  const titleElement = document.getElementById('title');
+  const adminElements = document.getElementById('admin-elements');
+  const isAdminView = titleElement?.textContent?.includes('Admin');
+
+  if (isAdminView) {
+    titleElement!.textContent = 'Fit Feet - User';
+    adminElements!.style.display = 'none';
+    fetchProducts(false); // Fetch products without admin buttons
+  } else {
+    titleElement!.textContent = 'Fit Feet - Admin';
+    adminElements!.style.display = 'block';
+    fetchProducts(true); // Fetch products with admin buttons
   }
 });
 
 document.querySelector('.name input')?.addEventListener('input', (event) => {
   const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
   const filteredProducts = allProducts.filter(product => product.item.toLowerCase().includes(searchTerm));
-  displayProducts(filteredProducts);
+  const isAdminView = document.getElementById('title')?.textContent?.includes('Admin');
+  displayProducts(filteredProducts, isAdminView);
 });
+
+// Handle adding a product to the cart
+function handleAddToCart(event: Event) {
+  const productCard = (event.target as HTMLElement).closest('.product-card');
+  const productId = (productCard as HTMLElement).dataset.id;
+  const product = allProducts.find(p => p.id === productId);
+
+  if (product) {
+    cart.push(product);
+    alert(`${product.item} has been added to your cart.`);
+  }
+}
+
+// Handle showing the cart modal
+document.getElementById('cart-btn')?.addEventListener('click', () => {
+  displayCart();
+  const cartModal = document.getElementById('cart-modal') as HTMLElement;
+  cartModal.style.display = 'block';
+});
+
+// Handle closing the cart modal
+document.getElementById('close-cart-btn')?.addEventListener('click', () => {
+  const cartModal = document.getElementById('cart-modal') as HTMLElement;
+  cartModal.style.display = 'none';
+});
+
+// Display the cart items in the cart modal
+function displayCart() {
+  const cartItemsContainer = document.getElementById('cart-items') as HTMLElement;
+  cartItemsContainer.innerHTML = '';
+
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+  } else {
+    cart.forEach((product, index) => {
+      const cartItem = document.createElement('div');
+      cartItem.className = 'cart-item';
+      cartItem.innerHTML = `
+        <img src="${product.imageUrl}" alt="${product.item}" style="width: 50px; height: 50px;">
+        <h4>${product.item}</h4>
+        <p>Price: ${product.price}</p>
+        <p>Description: ${product.description}</p>
+        <button class="remove-from-cart-btn" data-index="${index}">Remove</button>
+      `;
+      cartItemsContainer.appendChild(cartItem);
+    });
+
+    document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+      button.addEventListener('click', handleRemoveFromCart);
+    });
+  }
+}
+
+// Handle removing a product from the cart
+function handleRemoveFromCart(event: Event) {
+  const button = event.target as HTMLElement;
+  const index = button.dataset.index;
+  
+  if (index !== undefined) {
+    cart.splice(Number(index), 1);
+    displayCart();
+  }
+}
 
 fetchProducts();

@@ -44,6 +44,9 @@ ion-icon {
     margin-top: 10px;
     font-size: 40px;
   }
+  .login ion-icon:hover{
+    color:red;
+  }
   .name h2{
     font-style: italic;
     font-size: 30px;
@@ -122,9 +125,11 @@ ion-icon {
     font-size: larger;
   }
   .product-card img {
-    width: 130px;
+    width: 200px;
     height: 100px;
-    object-fit: cover;}
+    object-fit: cover;
+    
+  }
   .validation-message {
     color: red;
     font-size: 16px;
@@ -132,6 +137,43 @@ ion-icon {
     
 
   }
+  .log button {
+    border: none;
+    background-color: gray;
+  }
+  .cart button {
+    border: none;
+    background-color: gray;
+  }
+  #cart-modal {
+    position: fixed;
+    top: 20%;
+    left: 65%;
+    width: 30%;
+    background: white;
+    
+    display: none;
+    padding: 20px;
+    z-index: 1000;
+    border: red,2px solid;
+}
+.cart-item {
+  border: 2px solid, red;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 140px;
+  
+}
+
+
+
+
+
+
+
+
+
+
   
   @media (max-width: 1024px) {
     .name {
