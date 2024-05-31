@@ -20,14 +20,12 @@ function fetchProducts() {
         displayProducts(products, adminView);
     });
 }
-// Add event listeners for user and admin buttons
 (_a = document.getElementById('user-btn')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
     switchToUserView();
 });
 (_b = document.getElementById('admin-btn')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
     switchToAdminView();
 });
-// Function to switch to user view
 function switchToUserView() {
     const welcomePage = document.querySelector('.welcome-page');
     const mainPage = document.querySelector('.main');
@@ -35,14 +33,12 @@ function switchToUserView() {
     mainPage.style.display = 'block';
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Fit Feet - User';
-    fetchProducts(false); // Fetch products without admin buttons
-    // Hide the form in user view
+    fetchProducts(false);
     const itemsForm = document.getElementById('itemsform');
     if (itemsForm) {
         itemsForm.style.display = 'none';
     }
 }
-// Function to switch to admin view
 function switchToAdminView() {
     const welcomePage = document.querySelector('.welcome-page');
     const mainPage = document.querySelector('.main');
@@ -50,8 +46,7 @@ function switchToAdminView() {
     mainPage.style.display = 'block';
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Fit Feet - Admin';
-    fetchProducts(true); // Fetch products with admin buttons
-    // Show the form in admin view
+    fetchProducts(true);
     const itemsForm = document.getElementById('itemsform');
     if (itemsForm) {
         itemsForm.style.display = 'block';
@@ -237,7 +232,6 @@ function handleUpdate(event) {
     const isAdminView = (_b = (_a = document.getElementById('title')) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.includes('Admin');
     displayProducts(filteredProducts, isAdminView);
 });
-// Handle adding a product to the cart
 function handleAddToCart(event) {
     const productCard = event.target.closest('.product-card');
     const productId = productCard.dataset.id;
@@ -247,18 +241,15 @@ function handleAddToCart(event) {
         alert(`${product.item} has been added to your cart.`);
     }
 }
-// Handle showing the cart modal
 (_g = document.getElementById('cart-btn')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', () => {
     displayCart();
     const cartModal = document.getElementById('cart-modal');
     cartModal.style.display = 'block';
 });
-// Handle closing the cart modal
 (_h = document.getElementById('close-cart-btn')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', () => {
     const cartModal = document.getElementById('cart-modal');
     cartModal.style.display = 'none';
 });
-// Display the cart items in the cart modal
 function displayCart() {
     const cartItemsContainer = document.getElementById('cart-items');
     cartItemsContainer.innerHTML = '';
